@@ -10,9 +10,16 @@ class PlayScene extends Phaser.Scene {
     const { height, width } = this.game.config;
     this.CACTI_RESPAWN_INTERVAL = 1200;
     this.timeSinceLastCactus = Infinity;
+    this.currentScore = 0;
     this.gameOver = false;
     this.gameSpeed = 10;
     this.ground = this.add.tileSprite(0, height, width, 26, 'ground').setOrigin(0, 1);
+
+    const h1 = document.createElement("h1");
+    document.body.appendChild(h1);
+    h1.style.fontFamily = "Consolas";
+    h1.innerText = "0";
+    this.scoreText = h1;
 
     // Dino Game Object (Sprite)
     this.dino = this.physics.add.sprite(120, 0, 'dino-idle').setOrigin(0, 1);
@@ -67,6 +74,13 @@ class PlayScene extends Phaser.Scene {
   update(time, delta) {
 
     if (!this.gameOver) {
+
+      this.currentScore = Math.ceil(this.currentScore + (delta / 16));
+      this.scoreText.innerText = this.currentScore;
+
+      if (this.currentScore % 100 === 0) {
+        this.gameSpeed = this.gameSpeed + 2;
+      }
 
       this.timeSinceLastCactus = this.timeSinceLastCactus + delta;
       if (this.timeSinceLastCactus > this.CACTI_RESPAWN_INTERVAL) {
