@@ -78,6 +78,12 @@ class PlayScene extends Phaser.Scene {
 
       Phaser.Actions.IncX(this.cactiGroup.getChildren(), -this.gameSpeed);
 
+      this.cactiGroup.getChildren().forEach(cacti => {
+        if (cacti.x < -50) {
+          cacti.destroy();
+        }
+      });
+
       if (this.dino.body.deltaAbsY() > 0) { // Is the dino's Y position changing?
         this.dino.anims.stop();
         this.dino.setTexture('dino', 0);
